@@ -1,0 +1,47 @@
+<?php use dawfony\Ti;?>
+<?php global $URL_PATH ?>
+
+<?php Ti::extend("templates\\MainView.phtml"); ?>
+<?php Ti::startBlock("contenido"); ?>
+
+<h1>Nuevo Post</h1>
+<div class="form-group bg-light pl-5 pr-5 pb-3">
+    <form action="<?=$URL_PATH?>/subirpost" method="POST" enctype="multipart/form-data">
+    <br>
+    <textarea placeholder="Resumen" class="form-control" style="resize: none;" name="resumen" required><?=$resumen?></textarea>
+    <br>
+    <textarea placeholder="Texto completo" id="descripcion" class="form-control" rows= "15" name="texto"><?=$texto?></textarea>
+    <span class="error"><?=$errorTexto?></span>
+    <br>
+
+    <div class="row">
+        <div class="col-md-4">
+            <label for="select">Selecciona una categoría: </label>
+            <select id="select" name="categoria">
+                <option id="Nada"></option>
+                <option name="0" id="0" value="0">Anime</option>
+                <option name="1" id="1" value="1">Kpop</option>
+                <option name="2" id="2" value="2">Jpop</option>
+            </select>
+            <span class="error"><?=$errorCategoria?></span>
+        </div>
+        <div class="col-md-3"></div>
+
+        <div class="col-md-5">
+            <label for="imagen">Sube una foto:</label>
+            <input id="imagen" type="file" name="imagen" required>
+            <br>
+            <span class="error"><?=$errorImagen?></span>
+        </div>
+    </div>
+
+    <button type="submit" class=" mt-4 btn bg-dark" style="color: white;">Enviar</button>
+
+    </form>
+
+    <script type="text/javascript">
+            document.getElementById("<?=$_POST["categoria"]?>").selected = "selected";
+    </script>
+</div>
+<?php Ti::endBlock(); ?>
+<?php Ti::endExtend(); ?>

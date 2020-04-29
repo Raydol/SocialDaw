@@ -1,0 +1,102 @@
+<?php use dawfony\Ti; ?>
+<?php global $URL_PATH ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $title?></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!--<script src="https://use.fontawesome.com/185f9f7f50.js"></script>
+
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>tinymce.init({selector:'#descripcion'});</script>-->
+						
+    <style>
+        #jumbotron {
+            background-image: url("assets\\background.png");
+            background-position: 80% 75%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .titulo {
+            color: white;
+        }
+
+        #enlace {
+            color: white;
+            text-decoration: none;
+        }
+
+        .error {
+            color: red;
+        }
+
+        i {
+            color: white;
+        }
+    </style>
+    <script>
+    var URL_PATH = "<?=$URL_PATH?>";
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron shadow jumbotron-fluid mb-2" id="jumbotron">
+            <div class="container text-center">
+                <h1 class="display-4, titulo"><a href="<?=$URL_PATH?>" id="enlace">SOCIALDAW</a></h1>
+                <p class="lead, titulo">Tu red de anime, jpop y kpop</p>
+            </div>
+        </div>
+
+<!-- MENÚ DE NAVEGACIÓN   -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+  <a class="navbar-brand" href="<?=$URL_PATH?>/listado">Lo último</a>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+    <?php
+        if (!isset($_SESSION["login"])) {
+    ?>
+      <a class="nav-item nav-link active" href="<?=$URL_PATH?>/registro">Registro</a>
+      <a class="nav-item nav-link active" href="<?=$URL_PATH?>/login">Login</a>
+    <?php 
+        } else {
+            ?>
+      <a class="nav-item nav-link active" href="#">Siguiendo</a>
+      <a class="nav-item nav-link active" href="<?=$URL_PATH?>/perfil/<?=$_SESSION["login"]?>">Tu perfil</a>
+      <a class="nav-item nav-link active" href="javascript:void(0)" onclick="procesarLogout();">Cerrar sesión</a>
+
+            <?php
+        } 
+    ?>
+    </div>
+  </div>
+</nav>
+
+<!-- CONTENIDO   -->
+<?php Ti::startBlock("contenido"); ?>
+<?php Ti::endBlock(); ?>
+
+<!-- PIE DE PÁGINA   -->
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <p class="lead">© 2020 Copyright: socialdaw</p>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+        function procesarLogout() {
+            if (confirm("Está seguro de que desea cerrar sesión")) {
+                location.href = URL_PATH + "/logout";
+            }
+        }
+</script>
+</body>
+</html>

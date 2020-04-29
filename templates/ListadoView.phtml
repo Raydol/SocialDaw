@@ -1,0 +1,56 @@
+<?php use dawfony\Ti;?>
+<?php global $URL_PATH ?>
+
+<?php Ti::extend("templates\\MainView.phtml"); ?>
+<?php Ti::startBlock("contenido"); ?>
+
+<h1>Últimos posts</h1>
+<?php
+
+    if (count($posts) > 0) {
+        foreach ($posts as $post) {
+            ?>
+            <div class="row">
+                <div class="col-md-4"><img class="img-fluid" src="<?=$URL_PATH?>\\assets\\publicaciones\\<?=$post->foto?>"></div>
+                <div class="col-md-5">
+                    <h4><?=$post->resumen?></h4>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="#" class="btn btn-dark">Leer más</a>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p>like, comentario</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h5>Por: <?=$post->usuario_login?></h5>
+                    <h6>en <?=$post->categoria?></h6>
+                    <h5>el <?=$post->fecha?></h5>
+                </div>
+            </div>
+            <br>
+            <br>
+            <?php
+        }
+    }
+
+?>
+
+<?php
+    if (isset($_SESSION["login"])) {
+    ?>
+        <div style="position:fixed;bottom:60px;right:60px;">
+            <div class="button btn-dark btn-lg">
+                <a href="<?=$URL_PATH?>/subirpost" class="text-light">Subir Post</a>
+            </div>
+        </div>
+    <?php
+    }
+?>
+
+
+<?php Ti::endBlock(); ?>
+<?php Ti::endExtend(); ?>

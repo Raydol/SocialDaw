@@ -1,0 +1,52 @@
+<?php use dawfony\Ti;?>
+<?php global $URL_PATH ?>
+
+<?php Ti::extend("templates\\MainView.phtml"); ?>
+<?php Ti::startBlock("contenido"); ?>
+
+<form action="<?=$URL_PATH?>/registro" method="POST" class="bg-light pt-3 pl-5 pb-4">
+    <div class="form-group row">
+        <label for="login" class="col-sm-3 col-form-label">Login</label>
+    <div class="col-sm-5">
+        <input type="text" id="login" name="login" class="form-control" value="<?=$login?>">
+        <span class="error"><?=$errorLogin?></span>
+    </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="password" class="col-sm-3 col-form-label">Contraseña</label>
+    <div class="col-sm-5">
+        <input type="password" id="password" name="password" class="form-control" value="<?=$password?>">
+    </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="repassword" class="col-sm-3 col-form-label">Repita la contraseña</label>
+    <div class="col-sm-5">
+        <input type="password" id="repassword" name="repassword" class="form-control" value="<?=$repassword?>">
+        <span class="error"><?=$errorRepassword?></span>
+    </div>
+    </div>
+
+    <div class="form-group row">   
+        <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+    <div class="col-sm-5">
+        <input type="text" id="nombre" name="nombre" class="form-control" value="<?=$nombre?>">
+    </div>
+    </div>
+
+    <div class="form-group row">   
+        <label for="email" class="col-sm-3 col-form-label">Email</label>
+    <div class="col-sm-5">
+        <input type="email" id="email" name="email" class="form-control" value="<?=$email?>">
+    </div>
+    </div>
+<input type="hidden" name="rol_id" value="1">
+<button type="submit" class=" mt-4 btn btn-success">Regístrate</button>
+<a class="btn btn-dark mt-4 ml-3" href="<?=$URL_PATH?>/registro" role="button">Cancelar</a>
+
+
+</form>
+
+<?php Ti::endBlock(); ?>
+<?php Ti::endExtend(); ?>

@@ -1,0 +1,29 @@
+<?php use dawfony\Ti; ?>
+<?php global $URL_PATH ?>
+
+<?php Ti::extend("templates\\MainView.phtml"); ?>
+<?php Ti::startBlock("contenido"); ?>
+
+<div class="row">
+    <div class="col-md-2">
+        <img src="assets/perfil.png" class="img-fluid">
+    </div>
+
+    <div class="col-md-10">
+        <h2><?=$usuario->login?></h2>
+        <h3><?=$usuario->nombre?></h3>
+        Siguiendo <span class="badge badge-secondary"><?=$usuario->seguidores?></span> - Seguidores <span class="badge badge-secondary"><?=$usuario->siguiendo?></span>
+        
+        
+        <?php if ($usuario->login == $_SESSION["login"]): ?>
+            <h3>Este es tu perfil</h3>
+        <?php elseif ($usuario->loSigues): ?>
+            <a href="<?=$URL_PATH . "/perfil/" . $usuario->login . "/noseguir"?>">Dejar de seguir a <?=$usuario->login?></a>
+        <?php else: ?>
+            <a href="<?=$URL_PATH . "/perfil/" . $usuario->login . "/seguir"?>">Seguir a <?=$usuario->login?></a>
+        <?php endif ?>
+    </div>
+</div>
+<br>
+<?php Ti::endBlock(); ?>
+<?php Ti::endExtend(); ?>

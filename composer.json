@@ -1,0 +1,9 @@
+{
+    "name": "davidzz/instanime",
+    "type": "project",
+    "require": {
+        "noahbuscher/macaw": "dev-master",
+        "victorjfg/dawfony": "dev-master"
+    },
+    "minimum-stability": "dev"
+}
