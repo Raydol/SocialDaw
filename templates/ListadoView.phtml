@@ -4,7 +4,12 @@
 <?php Ti::extend("templates\\MainView.phtml"); ?>
 <?php Ti::startBlock("contenido"); ?>
 
-<h1>Últimos posts</h1>
+<?php if ($title == "Listado"): ?>
+<h1>Últimos posts:</h1>
+<?php else: ?>
+<h1>Posts de usuarios a los que sigues:</h1>
+<?php endif; ?>
+<br>
 <?php
 
     if (count($posts) > 0) {
@@ -26,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <h5>Por: <?=$post->usuario_login?></h5>
+                    <h5>Por: <a href="<?=$URL_PATH?>/perfil/<?=$post->usuario_login?>" class="text-dark"><?=$post->usuario_login?></a></h5>
                     <h6>en <?=$post->categoria?></h6>
                     <h5>el <?=$post->fecha?></h5>
                 </div>

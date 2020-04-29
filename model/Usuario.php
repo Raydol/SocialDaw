@@ -9,7 +9,7 @@ namespace model;
         public $email;
         public $rol_id;
         public $seguidores = 0;
-        public $siguiendo = 0;
+        public $seguidos = 0;
         public $loSigues = false;
 
         /*function __construct($login, $password, $nombre, $email, $rol_id) {

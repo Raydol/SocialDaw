@@ -18,7 +18,7 @@
 						
     <style>
         #jumbotron {
-            background-image: url("assets\\background.png");
+            background-image: url("<?=$URL_PATH?>\\assets\\background.png");
             background-position: 80% 75%;
             height: 100%;
             z-index: 1;
@@ -68,7 +68,7 @@
     <?php 
         } else {
             ?>
-      <a class="nav-item nav-link active" href="#">Siguiendo</a>
+      <a class="nav-item nav-link active" href="<?=$URL_PATH?>/listado/seguidos">Siguiendo</a>
       <a class="nav-item nav-link active" href="<?=$URL_PATH?>/perfil/<?=$_SESSION["login"]?>">Tu perfil</a>
       <a class="nav-item nav-link active" href="javascript:void(0)" onclick="procesarLogout();">Cerrar sesión</a>
 

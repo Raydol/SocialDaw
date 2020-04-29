@@ -55,6 +55,61 @@
             $conn->execute($sql, [$post->fecha, $post->resumen, $post->texto, $post->foto, $post->usuario_login, $post->categoria_post_id]);
         }
 
+        public function obtenerSeguidos($login) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT COUNT(usuario_login_seguidor) as siguiendo FROM sigue WHERE usuario_login_seguidor = ?";
+            return $conn->queryOne($sql, [$login])["siguiendo"];
+        }
+
+        public function obtenerSeguidores($login) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT COUNT(usuario_login_seguido) as seguidores FROM sigue WHERE usuario_login_seguido = ?";
+            return $conn->queryOne($sql, [$login])["seguidores"];
+        }
+
+
+        public function loSigues($sessionLogin, $login) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT COUNT(*) as seguimiento FROM sigue where usuario_login_seguidor = ? AND usuario_login_seguido = ?";
+            return $conn->queryOne($sql, [$sessionLogin, $login])["seguimiento"];
+        }
+
+        public function seguirUsuario($seguido, $seguidor) {
+            $conn = Klasto::getInstance();
+            $sql = "INSERT into sigue (usuario_login_seguido, usuario_login_seguidor) values(?, ?)";
+            $conn->execute($sql, [$seguido, $seguidor]);
+        }
+
+        public function dejarDeSeguirUsuario($seguido, $seguidor) {
+            $conn = Klasto::getInstance();
+            $sql = "DELETE from sigue WHERE usuario_login_seguido = ? AND usuario_login_seguidor = ?";
+            $conn->execute($sql, [$seguido, $seguidor]);
+        }
+
+        public function obtenerPostsPorUsuario($login) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT id, fecha, resumen, texto, foto, usuario_login, categoria_post_id 
+            FROM post WHERE usuario_login = ? ORDER BY fecha DESC";
+            $posts = $conn->query($sql, [$login], "model\\Post");
+            $categorias = $this->obtenerCategorias();
+            foreach ($posts as $post) {
+                $post->categoria = $categorias[$post->categoria_post_id]["descripcion"];
+            }
+            return $posts;
+        }
+
+        public function obtenerPostsSiguiendo($login) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT id, fecha, resumen, texto, foto, usuario_login, categoria_post_id 
+            FROM post INNER JOIN sigue ON post.usuario_login = sigue.usuario_login_seguido WHERE sigue.usuario_login_seguidor = ?";
+            $posts = $conn->query($sql, [$login], "model\\Post");
+            $categorias = $this->obtenerCategorias();
+            foreach ($posts as $post) {
+                $post->categoria = $categorias[$post->categoria_post_id]["descripcion"];
+            }
+            return $posts;
+        }
+
 
 
 

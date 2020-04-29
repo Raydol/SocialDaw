@@ -15,6 +15,17 @@
             echo Ti::render("templates\\ListadoView.phtml", compact("title", "posts"));
         }
 
+        public function listadoDeSeguidos() {
+            if (isset($_SESSION["login"])) {
+                $orm = new Orm();
+                $posts = $orm->obtenerPostsSiguiendo($_SESSION["login"]);
+                $title = "Listado de seguidos";
+                echo Ti::render("templates\\ListadoView.phtml", compact("title", "posts"));
+            } else {
+                echo "Algo salió mal";
+            }
+        }
+
         public function registro() {
             $title = "Registro";
             $login = "";
@@ -124,13 +135,19 @@
 
 
         public function post() {
-            $title = "Nuevo Post";
-            $errorCategoria = "";
-            $errorTexto = "";
-            $errorImagen = "";
-            $resumen = "";
-            $texto = "";
-            echo Ti::render("templates\\FormularioPostView.phtml", compact("title", "errorCategoria", "errorTexto", "resumen", "texto", "errorImagen"));
+
+            if (isset($_SESSION["login"])) {
+                $title = "Nuevo Post";
+                $errorCategoria = "";
+                $errorTexto = "";
+                $errorImagen = "";
+                $resumen = "";
+                $texto = "";
+                echo Ti::render("templates\\FormularioPostView.phtml", compact("title", "errorCategoria", "errorTexto", "resumen", "texto", "errorImagen"));
+            } else {
+                echo "Algo salió mal";
+            }
+            
 
 
         }
@@ -195,13 +212,42 @@
 
         }
 
-        function verPerfil($login) {
+        public function verPerfil($login) {
             $orm = new Orm();
             $usuario = $orm->obtenerUsuario($login);
-            echo Ti::render("templates\\PerfilView.phtml", compact("usuario"));
+            $usuario->seguidores = $orm->obtenerSeguidores($login);
+            $usuario->seguidos = $orm->obtenerSeguidos($login);
+            if (isset($_SESSION["login"])) {
+                $usuario->loSigues = $orm->loSigues($_SESSION["login"], $login);
+            }
+            $title = "Perfil de $login";
+
+            $posts = $orm->obtenerPostsPorUsuario($login);
+            echo Ti::render("templates\\PerfilView.phtml", compact("usuario", "title", "posts"));
         }
-        
-        
+
+        public function seguir($login) {
+            global $URL_PATH;
+            if (isset($_SESSION["login"])) {
+                $orm = new Orm();
+                $orm->seguirUsuario($login, $_SESSION["login"]);
+                header("Location: $URL_PATH/perfil/$login");
+            } else {
+                echo "Algo salió mal";
+            }
+
+        }
+
+        public function noSeguir($login) {
+            global $URL_PATH;
+            if (isset($_SESSION["login"])) {
+                $orm = new Orm();
+                $orm->dejarDeSeguirUsuario($login, $_SESSION["login"]);
+                header("Location: $URL_PATH/perfil/$login");
+            } else {
+                echo "Algo salió mal";
+            }
+        }
 
     }
 

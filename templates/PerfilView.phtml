@@ -6,24 +6,43 @@
 
 <div class="row">
     <div class="col-md-2">
-        <img src="assets/perfil.png" class="img-fluid">
+        <img src="<?=$URL_PATH?>/assets/perfil.png" class="img-fluid">
     </div>
 
     <div class="col-md-10">
         <h2><?=$usuario->login?></h2>
         <h3><?=$usuario->nombre?></h3>
-        Siguiendo <span class="badge badge-secondary"><?=$usuario->seguidores?></span> - Seguidores <span class="badge badge-secondary"><?=$usuario->siguiendo?></span>
-        
-        
-        <?php if ($usuario->login == $_SESSION["login"]): ?>
-            <h3>Este es tu perfil</h3>
+        Siguiendo <span class="badge badge-secondary"><?=$usuario->seguidos?></span> - Seguidores <span class="badge badge-secondary"><?=$usuario->seguidores?></span>
+        <br><br>
+        <?php if (!isset($_SESSION["login"])): ?>
+            <div class="alert alert-dark" role="alert">
+                Inicia sesión para seguir a <?=$usuario->login?> <br>
+                <span class="small">¿No tienes cuenta? <a href="<?=$URL_PATH?>/registro">Regístrate</a></span>
+            </div>
+        <?php elseif ($_SESSION["login"] == $usuario->login): ?>
+            <div class="alert alert-dark" role="alert">Este es tu perfil</div>
         <?php elseif ($usuario->loSigues): ?>
-            <a href="<?=$URL_PATH . "/perfil/" . $usuario->login . "/noseguir"?>">Dejar de seguir a <?=$usuario->login?></a>
+            <a class="btn btn-secondary text-light" href="<?=$URL_PATH?>/perfil/<?=$usuario->login?>/noseguir">Dejar de seguir a <?=$usuario->login?></a>
         <?php else: ?>
-            <a href="<?=$URL_PATH . "/perfil/" . $usuario->login . "/seguir"?>">Seguir a <?=$usuario->login?></a>
-        <?php endif ?>
+            <a class="btn btn-dark text-light" href="<?=$URL_PATH?>/perfil/<?=$usuario->login?>/seguir">Seguir a <?=$usuario->login?></a>
+        <?php endif;?>
     </div>
 </div>
 <br>
+
+<h3>Posts de <?=$usuario->login?></h3>
+<table class="table">
+<?php
+    foreach ($posts as $post) {
+        ?>
+            <tr>
+                <td class="col-md-8"><a href="#" class="text-dark"><?=$post->resumen?></a></td>
+                <td class="col-md-3"><?=$post->fecha?></td>
+                <td class="col-md-1"><?=$post->categoria?></td>
+            </tr>
+        <?php
+    }
+?>
+</table>
 <?php Ti::endBlock(); ?>
 <?php Ti::endExtend(); ?>
