@@ -36,7 +36,7 @@
     foreach ($posts as $post) {
         ?>
             <tr>
-                <td class="col-md-8"><a href="#" class="text-dark"><?=$post->resumen?></a></td>
+                <td class="col-md-8"><a href="<?=$URL_PATH?>/post/<?=$post->id?>" class="text-dark"><?=$post->resumen?></a></td>
                 <td class="col-md-3"><?=$post->fecha?></td>
                 <td class="col-md-1"><?=$post->categoria?></td>
             </tr>

@@ -35,6 +35,12 @@
     //Listado siguiendo
     Macaw::get($URL_PATH . "/listado/seguidos", "controller\UsuarioController@listadoDeSeguidos");
 
+    //Ver un post entero
+    Macaw::get($URL_PATH . "/post/(:any)", "controller\UsuarioController@verPost");
+
+    //Añadir un comentario
+    Macaw::post($URL_PATH . "/comentario/nuevo", "controller\UsuarioController@nuevoComentario");
+
     Macaw::error(function() {
     echo '404 :: Not Found';
     });

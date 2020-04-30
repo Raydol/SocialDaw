@@ -39,7 +39,8 @@
 
         public function obtenerTodosLosPost() {
             $conn = Klasto::getInstance();
-            $sql = "SELECT id, fecha, resumen, texto, foto, usuario_login, categoria_post_id FROM post";
+            $sql = "SELECT id, fecha, resumen, texto, foto, usuario_login, categoria_post_id 
+            FROM post ORDER BY fecha DESC";
             $posts =  $conn->query($sql, [], "model\\Post");
             $categorias = $this->obtenerCategorias();
             foreach ($posts as $post) {
@@ -101,13 +102,46 @@
         public function obtenerPostsSiguiendo($login) {
             $conn = Klasto::getInstance();
             $sql = "SELECT id, fecha, resumen, texto, foto, usuario_login, categoria_post_id 
-            FROM post INNER JOIN sigue ON post.usuario_login = sigue.usuario_login_seguido WHERE sigue.usuario_login_seguidor = ?";
+            FROM post JOIN sigue ON post.usuario_login = sigue.usuario_login_seguido WHERE sigue.usuario_login_seguidor = ? 
+            ORDER BY fecha DESC";
             $posts = $conn->query($sql, [$login], "model\\Post");
             $categorias = $this->obtenerCategorias();
             foreach ($posts as $post) {
                 $post->categoria = $categorias[$post->categoria_post_id]["descripcion"];
             }
             return $posts;
+        }
+
+        public function obtenerPost($id) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT id, fecha, resumen, texto, foto, usuario_login, categoria_post_id 
+            FROM post WHERE id = ?";
+            $post = $conn->queryOne($sql, [$id], "model\\Post");
+            if (!$post) {
+                return false;
+            } else {
+                $categorias = $this->obtenerCategorias();
+                $post->categoria = $categorias[$post->categoria_post_id]["descripcion"];
+                return $post;
+            }
+        }
+
+        public function annadirComentario($comentario) {
+            $conn = Klasto::getInstance();
+            $sql = "INSERT into comenta (fecha, texto, post_id, usuario_login) values (?, ?, ?, ?)";
+            $conn->execute($sql, [$comentario->fecha, $comentario->texto, $comentario->post_id, $comentario->usuario_login]);
+        }
+
+        public function obtenerComentariosPorPost($post_id) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT fecha, texto, post_id, usuario_login FROM comenta WHERE post_id = ? ORDER BY fecha DESC";
+            return $conn->query($sql, [$post_id], "model\\Comentario");
+        }
+
+        public function contarComentarios($post_id) {
+            $conn = Klasto::getInstance();
+            $sql = "SELECT COUNT(*) as num_comentarios FROM comenta WHERE post_id = ?";
+            return $conn->queryOne($sql, [$post_id])["num_comentarios"];
         }
 
 

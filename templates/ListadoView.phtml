@@ -15,23 +15,23 @@
     if (count($posts) > 0) {
         foreach ($posts as $post) {
             ?>
-            <div class="row">
+            <div class="row border border-dark pt-1 pb-1">
                 <div class="col-md-4"><img class="img-fluid" src="<?=$URL_PATH?>\\assets\\publicaciones\\<?=$post->foto?>"></div>
                 <div class="col-md-5">
                     <h4><?=$post->resumen?></h4>
                     <div class="row">
                         <div class="col-sm-6">
-                            <a href="#" class="btn btn-dark">Leer más</a>
+                            <a href="<?=$URL_PATH?>/post/<?=$post->id?>" class="btn btn-dark">Leer más</a>
                         </div>
 
                         <div class="col-sm-6">
-                            <p>like, comentario</p>
+                        likes: <span><?=$post->numero_likes?></span> - comentarios: <span><?=$post->numero_comentarios?></span>
                         </div>
 
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <h5>Por: <a href="<?=$URL_PATH?>/perfil/<?=$post->usuario_login?>" class="text-dark"><?=$post->usuario_login?></a></h5>
+                    <h5>Por: <a href="<?=$URL_PATH?>/perfil/<?=$post->usuario_login?>"><?=$post->usuario_login?></a></h5>
                     <h6>en <?=$post->categoria?></h6>
                     <h5>el <?=$post->fecha?></h5>
                 </div>

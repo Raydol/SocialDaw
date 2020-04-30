@@ -1,0 +1,72 @@
+<?php use dawfony\Ti; ?>
+<?php global $URL_PATH ?>
+
+<?php Ti::extend("templates\\MainView.phtml"); ?>
+<?php Ti::startBlock("contenido"); ?>
+
+<div class="row">
+    <div class="col-md-5">
+        <img class="img-fluid" src="<?=$URL_PATH?>\\assets\\publicaciones\\<?=$post->foto?>">
+    </div>
+
+    <div class="col-md-7">
+        <h4><?=$post->resumen?></h4>
+        likes: <span><?=$post->numero_likes?></span> - comentarios: <span><?=$post->numero_comentarios?></span>
+        <p>Por <a href="<?=$URL_PATH?>/perfil/<?=$post->usuario_login?>"><?=$post->usuario_login?></a> en 
+        <em><?=$post->categoria?></em> el <?=$fecha?> a las <?=$hora?></p>
+    </div>
+</div>
+
+<p><?=$post->texto?></p>
+
+<hr class="mt-4">
+
+<h4>Comentarios:</h4>
+
+<?php if (!isset($_SESSION["login"])): ?>
+    <div class="alert alert-dark alert-dismissible" role="alert">
+        <a href="<?=$URL_PATH?>/login">Inicia sesión</a> para dejar tu comentario
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php else: ?>
+
+    <form action="<?=$URL_PATH?>/comentario/nuevo" method="POST">
+        <div class="row form-group">
+            <div class="col-md-8">
+                <?php if (count($comentarios) > 0): ?>
+                    <textarea placeholder="Escribe aquí tu comentario" rows="2" cols="80" required name="textarea"></textarea>
+                <?php else: ?>
+                    <textarea placeholder="Se el primero en comentar" rows="2" cols="80" required name="textarea"></textarea>
+                <?php endif; ?>
+            </div>
+            <input type="hidden" value="<?=$post->id?>" name="post_id">
+            <div class="col-md-4">
+                <button type="submit">Enviar</button>
+            </div>
+        </div>
+    </form>
+
+<?php endif; ?>
+
+<table class="table">
+<?php
+    foreach ($comentarios as $comentario) {
+        ?>
+            <tr>
+                <td class="col-md-8"><?=$comentario->texto?></td>
+                <td class="col-md-4">
+                    Por <a href="<?=$URL_PATH?>/perfil/<?=$comentario->usuario_login?>"><?=$comentario->usuario_login?></a> 
+                    el <?=$comentario->fecha?>
+                </td>
+            </tr>
+        <?php
+    }
+?>
+</table>
+
+
+
+<?php Ti::endBlock(); ?>
+<?php Ti::endExtend(); ?>

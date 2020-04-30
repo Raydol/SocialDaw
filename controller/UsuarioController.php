@@ -1,10 +1,12 @@
 <?php
     namespace Controller;
+    require_once "funciones.php";
     use dawfony\Ti;
     use dawfony\Klasto;
     use model\Orm;
     use model\Usuario;
     use model\Post;
+    use model\Comentario;
     
     class UsuarioController extends Controller
     {
@@ -12,6 +14,10 @@
             $title = "Listado";
             $orm = new Orm();
             $posts = $orm->obtenerTodosLosPost();
+            foreach ($posts as $post) {
+                //$post->numero_likes = $orm->contarLikes($id);
+                $post->numero_comentarios = $orm->contarComentarios($post->id); 
+            }
             echo Ti::render("templates\\ListadoView.phtml", compact("title", "posts"));
         }
 
@@ -247,6 +253,37 @@
             } else {
                 echo "Algo salió mal";
             }
+        }
+
+        public function verPost($id) {
+            $orm = new Orm();
+            $post = $orm->obtenerPost($id);
+            if ($post) {
+                $title = "Ver Post";
+                $fechaSeparada = explode(" ", $post->fecha);
+                $fecha = $fechaSeparada[0];
+                $hora = $fechaSeparada[1];
+                //$post->numero_likes = $orm->contarLikes($id);
+                $post->numero_comentarios = $orm->contarComentarios($id);
+
+                $comentarios = $orm->obtenerComentariosPorPost($id);
+                echo Ti::render("templates\\PostView.phtml", compact("post", "title", "fecha", "hora", "comentarios"));
+            } else {
+                echo "Algo salió mal";
+            }
+        }
+
+        public function nuevoComentario() {
+            global $URL_PATH;
+            $fecha = getdate();
+            $comentario = new Comentario;
+            $comentario->fecha = $fecha["year"] . "-" . $fecha["mon"] . "-" . $fecha["mday"] . " " . $fecha["hours"] . ":" . $fecha["minutes"] . ":" . $fecha["seconds"];
+            $comentario->texto = sanitizar($_POST["textarea"]);
+            $comentario->post_id = $_POST["post_id"];
+            $comentario->usuario_login = $_SESSION["login"];
+            $orm = new Orm();
+            $orm->annadirComentario($comentario);
+            header("Location: $URL_PATH/post/$comentario->post_id");
         }
 
     }
